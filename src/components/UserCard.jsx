@@ -1,5 +1,3 @@
-import React from 'react'
-
  function UserCard({user,onUserClick}) {
   return (
     <div className='user-card' onClick={()=> onUserClick(user.id)} >
