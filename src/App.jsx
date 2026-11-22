@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import DashboardHeader from './components/DashboardHeader';
 import './App.css'
 
@@ -20,21 +20,35 @@ function App() {
     { id: 5, name: "ammar", age: 19, jobTitle: "engineer", isActive: false, skills: ["Q&A", "automate", "bash", "linux"] }
 
   ]);
- const [filter,setFilter]= useState("all");
- const [search,setSearch]= useState("");
- const [selectedUser,setSelectedUser]=useState(null);
-function onUserClick(id) {
-      setSelectedUser(users.find((user)=> user.id === id))  
-  }
-  function deleteUser(id){
-    setUsers(prevUsers => prevUsers.filter(((user) => user.id !== id)))
+//  const [filter,setFilter]= useState("all");
+//  const [search,setSearch]= useState("");
+//  const [selectedUser,setSelectedUser]=useState(null);
+// function onUserClick(id) {
+//       setSelectedUser(users.find((user)=> user.id === id))  
+//   }
+//   function deleteUser(id){
+//     setUsers(prevUsers => prevUsers.filter(((user) => user.id !== id)))
 
 
-  }
+//   } 
+const [counter,setCounter]=useState(0);
+const controller = new AbortController();
+useEffect(() => {
   
+  setInterval(() => {
+    setCounter(counter => counter + 1);
+  }, 1000);
+       document.querySelector("h1").innerText = ` ${counter}`
+      },[counter]);
+
+  if(counter >= 1000){
+    controller.abort();
+  }
   return (
     <div>
-      <DashboardHeader  users={users} selectedUser={selectedUser}  filter={filter} setFilter={setFilter} deleteUser={deleteUser}  onUserClick={onUserClick} setUsers={setUsers}/>
+      <h1></h1>
+     
+      {/* <DashboardHeader  users={users} selectedUser={selectedUser}  filter={filter} setFilter={setFilter} deleteUser={deleteUser}  onUserClick={onUserClick} setUsers={setUsers}/> */}
     </div>);
 
 }
