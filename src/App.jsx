@@ -3,7 +3,7 @@ import DashboardHeader from './components/DashboardHeader';
 import './App.css'
 
 
-function App() {
+ function App() {
   // const users = [
   //   { id: 1, name: "ali", age: 22, jobTitle: "engineer", isActive: true, skills: ["JavaScript", "html", "css", "react"] },
   //   { id: 2, name: "hossam", age: 25, jobTitle: "engineer", isActive: true, skills: ["animations", "bootstrap", "tailwind", "jinja"] },
@@ -31,23 +31,61 @@ function App() {
 
 
 //   } 
-const [counter,setCounter]=useState(0);
-const controller = new AbortController();
-useEffect(() => {
-  
-  setInterval(() => {
-    setCounter(counter => counter + 1);
-  }, 1000);
-       document.querySelector("h1").innerText = ` ${counter}`
-      },[counter]);
 
-  if(counter >= 1000){
-    controller.abort();
-  }
+
+const [counter,setCounter]=useState(0);
+const [usersApi,setUsersApi] = useState([]);
+const controller = new AbortController();
+
+let [isPlay,setIsPlay]  = useState(false);
+
+      useEffect(() => {
+        
+          if (!isPlay) {
+            return;
+          }
+
+
+
+      const intervalId = setInterval(() => {
+        /* start */
+        
+          setCounter((prev)=> {
+          return prev + 1;
+          })
+      
+
+      
+        
+      }, 1000); 
+        return () => clearInterval(intervalId);
+
+  
+      },[isPlay]);
+    async function fetchdata(){
+      const res= await fetch("https://jsonplaceholder.typicode.com/users",
+        {signal: controller.signal}
+      );
+      
+
+
+    }
+     fetchdata()
+
+
+
   return (
     <div>
-      <h1></h1>
-     
+      <h1>totals {users.length}</h1>
+
+      <h2>{counter}</h2>
+      <button disabled={!isPlay} onClick={()=>{setIsPlay(0),setCounter(0)}}>reset</button>
+      <button disabled={!isPlay} onClick={()=>{setIsPlay(false)}}>pause</button>
+      <button disabled={isPlay} onClick={()=>{setIsPlay(true)}}>play</button>
+      
+      
+      
+      
       {/* <DashboardHeader  users={users} selectedUser={selectedUser}  filter={filter} setFilter={setFilter} deleteUser={deleteUser}  onUserClick={onUserClick} setUsers={setUsers}/> */}
     </div>);
 
